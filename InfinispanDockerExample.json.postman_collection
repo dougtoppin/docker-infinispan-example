@@ -1,0 +1,65 @@
+{
+	"id": "d057759e-f735-d721-ba30-5bcf402b6dbc",
+	"name": "Infinispan docker example",
+	"description": "Simple examples of using the Infinispan ReST Interface with\nno authentication",
+	"order": [],
+	"folders": [
+		{
+			"id": "a06f67e2-9b3f-0ba6-900a-a38068a0e1bb",
+			"name": "requests",
+			"description": "",
+			"order": [
+				"be91ba68-bd1d-63be-03ab-70ebc7fcf558",
+				"3f0e1c12-0d15-64bf-87ab-29313e615f03"
+			],
+			"collection_name": "Infinispan docker example",
+			"collection_id": "d057759e-f735-d721-ba30-5bcf402b6dbc"
+		}
+	],
+	"timestamp": 1422896248172,
+	"synced": false,
+	"remoteLink": "",
+	"requests": [
+		{
+			"id": "3f0e1c12-0d15-64bf-87ab-29313e615f03",
+			"headers": "",
+			"url": "http://127.0.0.1:8080/rest/default/a02",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1422902274578,
+			"name": "get example",
+			"description": "Simple example of getting value\nfrom an Infinispan cache with\nno authentication\n",
+			"collectionId": "d057759e-f735-d721-ba30-5bcf402b6dbc",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "be91ba68-bd1d-63be-03ab-70ebc7fcf558",
+			"headers": "",
+			"url": "http://127.0.0.1:8080/rest/default/a02",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1422901740784,
+			"name": "put example",
+			"description": "Simple example of putting a value into\nan Infinispan cache using the ReST\ninterface with no authentication",
+			"collectionId": "d057759e-f735-d721-ba30-5bcf402b6dbc",
+			"responses": [],
+			"synced": false,
+			"rawModeData": "something"
+		}
+	]
+}

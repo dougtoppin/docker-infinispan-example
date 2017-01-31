@@ -1,0 +1,19 @@
+FROM jboss/infinispan-server:7.1.0.Final
+MAINTAINER Doug Toppin <dougtoppin@gmail.com>
+
+# Turn off Infinispan authentication for the default cache by removing the
+# authentication portion of it.
+# Note that there is a configuration difference between Infinispan 7.* and 8.
+# This example is using Infinispan 7.1.
+
+# the original line probably looks like this:
+# <rest-connector virtual-server="default-host" cache-container="local" security-domain="other" auth-method="BASIC"/>
+
+# we are going to remove this from that line: cache-container="local" security-domain="other" auth-method="BASIC"
+RUN sed -i 's/.*rest-connector.*/<rest-connector virtual-server=\"default-host\" cache-container=\"local\"\/>/' /opt/jboss/infinispan-server/standalone/configuration/standalone.xml
+
+# Expose Infinispan server  ports
+EXPOSE 8080 8181 9990 11211 11222
+
+# Run Infinispan server and bind to all interface
+CMD ["/opt/jboss/infinispan-server/bin/standalone.sh", "-b", "0.0.0.0"]
