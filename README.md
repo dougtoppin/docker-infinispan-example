@@ -25,7 +25,8 @@ For this example I am using macOS and the following Docker version. An earlier v
 Note that this will fire up a Centos-7 Linux, install Java, Infinispan, configure it a little and you are ready to go.
 
 ####Building and running
-Build the container
+Build the container or run the one already built one in Dockerhub.
+If you want to build the image yourself try this:
 
     docker build .
 
@@ -33,24 +34,28 @@ Find the container id of what you just built using the following. You should als
 
     docker images
 
-Now start it up and expose the ports that we need. We will be running it as a daemon (meaning in the background).
+Now start it up and expose the ports that we need.
+We will be running it as a daemon (meaning in the background).
 Replace the image id at the end with your newly build id.
 
     docker run -d -it -p 8080:8080 -p 11222:11222 a7142852a547
 
-Now get the container id
+Or just run the already built image in Dockerhub
 
-    docker ps
+    docker run -d -it -p 8080:8080 -p 11222:11222 dougtoppin/docker-infinispan-example
+
 
 ####Going in to the container
 
 Go in the container and look around using the following command if you want to.
 The `standalone.xml` that was modified to remove authentication can be found at `/opt/jboss/infinispan-server/standalone/configuration/standalone.xml`.
+Note that `$(docker ps -lq)` will return the container id of the most recently run container.
 
-    docker exec -i -t b8c20c0bafe9 /bin/bash
+    docker exec -i -t $(docker ps -lq) /bin/bash
 
 ####Testing
 Once your container is running you can use the ReST interface to access the Infinispan server.
+This can be done using either a tool such as `Postman` or `curl`
 
 
 #####Postman
