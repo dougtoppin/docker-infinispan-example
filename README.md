@@ -87,10 +87,10 @@ To use `curl` to get what was just stored use this
 
 ####Infinispan cli
 
-After you have done a few operations using postman go back into the shell in your container and use the `infinispan-cli` to get some stats from the cache like this:
+After you have done a few operations using postman try using the `infinispan-cli` to get some stats from the cache like this:
 
-    $ cd /opt/jboss/infinispan-server/bin
-    $ sh ispn-cli.sh
+    $ docker exec -it $(docker ps -lq) sh /opt/jboss/infinispan-server/bin/ispn-cli.sh
+
     You are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.
     [disconnected /]
     connect
