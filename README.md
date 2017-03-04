@@ -1,24 +1,24 @@
-If you want to try out using Infinispan in a Docker container using its ReST interface here is how you can do it.
+If you want to try out using Infinispan in a Docker container using its ReST interface here is how you can do it. This example also demonstrates the use of both the Postman and Newman test tools as Docker containers.
 Note that the Dockerfile will disable authentication in the Infinispan default cache.
-Change the container ids to your values.
+Change the container ids to your values where necessary. If you use the pre-built images on dockerhub it will be more convenient.
 
-For this example I am using macOS and the following Docker version. An earlier version will likely work just as well.
+For this example I am using macOS and the following Docker version. An earlier version may work just as well.
 
     $ docker version
     Client:
-     Version:      1.13.0
-     API version:  1.25
-     Go version:   go1.7.3
-     Git commit:   49bf474
-     Built:        Wed Jan 18 16:20:26 2017
+     Version:      17.03.0-ce
+     API version:  1.26
+     Go version:   go1.7.5
+     Git commit:   60ccb22
+     Built:        Thu Feb 23 10:40:59 2017
      OS/Arch:      darwin/amd64
 
     Server:
-     Version:      1.13.0
-     API version:  1.25 (minimum version 1.12)
-     Go version:   go1.7.3
-     Git commit:   49bf474
-     Built:        Wed Jan 18 16:20:26 2017
+     Version:      17.03.0-ce
+     API version:  1.26 (minimum version 1.12)
+     Go version:   go1.7.5
+     Git commit:   3a232c8
+     Built:        Tue Feb 28 07:52:04 2017
      OS/Arch:      linux/amd64
      Experimental: true
 
@@ -47,7 +47,7 @@ Or just run the already built image in Dockerhub
 
 ####Going in to the container
 
-Go in the container and look around using the following command if you want to.
+Go in the container with a shell and look around using the following command if you want to.
 The `standalone.xml` that was modified to remove authentication can be found at `/opt/jboss/infinispan-server/standalone/configuration/standalone.xml`.
 Note that `$(docker ps -lq)` will return the container id of the most recently run container.
 
@@ -72,6 +72,47 @@ Send it and the response should contain `something` with a status of `200 OK`.
 
 Try changing the key `a02` to something else and the request should not return anything (note the `404 Not Found` status if you do).
 
+#####Newman
+Newman is a tool that allows you to run Postman collections at the shell. This facilitates automated testing such as in continuous integration. Newman can also be run as a container as follows. In this example, the current directory (containing the Postman collection) is passed to the container in the directory that it expects to find files (/etc/newman).
+Also note the network argument of host. This tells Docker to give the contain access to the host network rather than using it's own network space.
+
+    docker run -v $(pwd):/etc/newman --network=host -t postman/newman_ubuntu1404  run InfinispanDockerExample.json.postman_collection
+
+The output of the run will note the tests that were run and the results which should indicate that 2 tests were performed (put and get) and the correct status (http response code 200) and expected get results were returned.
+
+    newman
+
+    Infinispan docker example
+
+    ❏ requests
+    ↳ put example
+      PUT http://127.0.0.1:8080/rest/default/a02 [200 OK, 144B, 22ms]
+      ✓  Status code is 200
+
+    ↳ get example
+      GET http://127.0.0.1:8080/rest/default/a02 [200 OK, 255B, 10ms]
+      ✓  Status code is 200
+      ✓  Body is correct
+
+    ┌─────────────────────────┬──────────┬──────────┐
+    │                         │ executed │   failed │
+    ├─────────────────────────┼──────────┼──────────┤
+    │              iterations │        1 │        0 │
+    ├─────────────────────────┼──────────┼──────────┤
+    │                requests │        2 │        0 │
+    ├─────────────────────────┼──────────┼──────────┤
+    │            test-scripts │        2 │        0 │
+    ├─────────────────────────┼──────────┼──────────┤
+    │      prerequest-scripts │        0 │        0 │
+    ├─────────────────────────┼──────────┼──────────┤
+    │              assertions │        3 │        0 │
+    ├─────────────────────────┴──────────┴──────────┤
+    │ total run duration: 140ms                     │
+    ├───────────────────────────────────────────────┤
+    │ total data received: 9B (approx)              │
+    ├───────────────────────────────────────────────┤
+    │ average response time: 16ms                   │
+    └───────────────────────────────────────────────┘
 
 #####curl
 The `curl` command can also be used to access the cache.
