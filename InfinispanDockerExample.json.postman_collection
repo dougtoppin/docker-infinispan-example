@@ -1,65 +1,66 @@
 {
-	"id": "d057759e-f735-d721-ba30-5bcf402b6dbc",
-	"name": "Infinispan docker example",
-	"description": "Simple examples of using the Infinispan ReST Interface with\nno authentication",
-	"order": [],
-	"folders": [
+	"variables": [],
+	"info": {
+		"name": "Infinispan docker example",
+		"_postman_id": "1ebb7d74-a84c-3b2b-5cc7-57c9c7e4541e",
+		"description": "Simple examples of using the Infinispan ReST Interface with\nno authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
 		{
-			"id": "a06f67e2-9b3f-0ba6-900a-a38068a0e1bb",
 			"name": "requests",
 			"description": "",
-			"order": [
-				"be91ba68-bd1d-63be-03ab-70ebc7fcf558",
-				"3f0e1c12-0d15-64bf-87ab-29313e615f03"
-			],
-			"collection_name": "Infinispan docker example",
-			"collection_id": "d057759e-f735-d721-ba30-5bcf402b6dbc"
-		}
-	],
-	"timestamp": 1422896248172,
-	"synced": false,
-	"remoteLink": "",
-	"requests": [
-		{
-			"id": "3f0e1c12-0d15-64bf-87ab-29313e615f03",
-			"headers": "",
-			"url": "http://127.0.0.1:8080/rest/default/a02",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "params",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1422902274578,
-			"name": "get example",
-			"description": "Simple example of getting value\nfrom an Infinispan cache with\nno authentication\n",
-			"collectionId": "d057759e-f735-d721-ba30-5bcf402b6dbc",
-			"responses": [],
-			"synced": false
-		},
-		{
-			"id": "be91ba68-bd1d-63be-03ab-70ebc7fcf558",
-			"headers": "",
-			"url": "http://127.0.0.1:8080/rest/default/a02",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "PUT",
-			"data": [],
-			"dataMode": "raw",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1422901740784,
-			"name": "put example",
-			"description": "Simple example of putting a value into\nan Infinispan cache using the ReST\ninterface with no authentication",
-			"collectionId": "d057759e-f735-d721-ba30-5bcf402b6dbc",
-			"responses": [],
-			"synced": false,
-			"rawModeData": "something"
+			"item": [
+				{
+					"name": "put example",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://127.0.0.1:8080/rest/default/a02",
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "something"
+						},
+						"description": "Simple example of putting a value into\nan Infinispan cache using the ReST\ninterface with no authentication"
+					},
+					"response": []
+				},
+				{
+					"name": "get example",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"tests[\"Body is correct\"] = responseBody === \"something\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://127.0.0.1:8080/rest/default/a02",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Simple example of getting value\nfrom an Infinispan cache with\nno authentication\n"
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
