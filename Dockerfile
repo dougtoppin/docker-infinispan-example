@@ -1,5 +1,7 @@
 FROM jboss/infinispan-server:7.1.0.Final
 MAINTAINER Doug Toppin <dougtoppin@gmail.com>
+LABEL org.label-schema.vcs-url="https://github.com/dougtoppin/docker-infinispan-example"
+LABEL org.label-schema.description="Infinispan cache ReST example using Postman and Newman"
 
 # Turn off Infinispan authentication for the default cache by removing the
 # authentication portion of it.
