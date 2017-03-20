@@ -1,0 +1,16 @@
+version: '2.1'
+services:
+  infinispan:
+    build: .
+    container_name: infinispan
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:11222:11222"
+  test:
+    depends_on:
+      - infinispan
+    image: postman/newman_ubuntu1404
+    volumes:
+      - .:/etc/newman
+    command: run /etc/newman/InfinispanDockerNewmanExample.json.postman_collection
+

@@ -2,7 +2,7 @@ If you want to try out using Infinispan in a Docker container using its ReST int
 Note that the Dockerfile will disable authentication in the Infinispan default cache.
 Change the container ids to your values where necessary. If you use the pre-built images on dockerhub it will be more convenient.
 
-For this example I am using macOS and the following Docker version. An earlier version may work just as well.
+For this example I am using macOS and the following Docker versions. An earlier version may work just as well.
 
     $ docker version
     Client:
@@ -22,23 +22,25 @@ For this example I am using macOS and the following Docker version. An earlier v
      OS/Arch:      linux/amd64
      Experimental: true
 
+     $ docker-compose version
+     docker-compose version 1.11.2, build dfed245
+     docker-py version: 2.1.0
+     CPython version: 2.7.12
+     OpenSSL version: OpenSSL 1.0.2j  26 Sep 2016
+
 Note that this will fire up a Centos-7 Linux, install Java, Infinispan, configure it a little and you are ready to go.
 
 ####Building and running
 Build the container or run the one already built one in Dockerhub.
 If you want to build the image yourself try this:
 
-    docker build .
-
-Find the container id of what you just built using the following. You should also be able to find it in the build output in `Successfully built IMAGEID`
-
-    docker images
+    docker build -t docker-infinispan .
 
 Now start it up and expose the ports that we need.
 We will be running it as a daemon (meaning in the background).
 Replace the image id at the end with your newly build id.
 
-    docker run -d -it -p 8080:8080 -p 11222:11222 a7142852a547
+    docker run -d -it -p 8080:8080 -p 11222:11222 docker-infinispan
 
 Or just run the already built image in Dockerhub
 
@@ -114,6 +116,7 @@ The output of the run will note the tests that were run and the results which sh
     │ average response time: 16ms                   │
     └───────────────────────────────────────────────┘
 
+
 #####curl
 The `curl` command can also be used to access the cache.
 
@@ -176,3 +179,56 @@ When you are all done with your container shell exit it as well
 Now stop the container with (using the same container id from the `exec` command)
 
     docker stop b8c20c0bafe9
+
+#####docker-compose
+docker-compose is an orchestration mechanism that allows grouping related services into a single docker-compose.yml file.
+Using that enables starting all of the related services using a single `docker-compose up` command.
+Compose can also facilitate automated regression testing by starting the necessary services, running regression testing and then stopping all of the services.
+
+First ensure that any containers run using the previous instructions have been stopped (to prevent port conflicts).
+Next, the `regrtest-compose.sh` script will start the Infinispan service as a daemon, then run the Postman collection using the Newman cli and finally stopping the Infinispan service.
+
+    $ ./regrtest-compose.sh
+    Creating network "dockerinfinispanexample_default" with the default driver
+    Creating infinispan
+    infinispan is up-to-date
+    Creating dockerinfinispanexample_test_1
+    Attaching to dockerinfinispanexample_test_1
+    test_1        | newman
+    test_1        |
+    test_1        | Infinispan docker example
+    test_1        |
+    test_1        | ❏ requests
+    test_1        | ↳ put example
+    test_1        |   PUT http://infinispan:8080/rest/default/a02 [200 OK, 144B, 171ms]
+    test_1        |   ✓  Status code is 200
+    test_1        |
+    test_1        | ↳ get example
+    test_1        |   GET http://infinispan:8080/rest/default/a02 [200 OK, 255B, 13ms]
+    test_1        |   ✓  Status code is 200
+    test_1        |   ✓  Body is correct
+    test_1        |
+    test_1        | ┌─────────────────────────┬──────────┬──────────┐
+    test_1        | │                         │ executed │   failed │
+    test_1        | ├─────────────────────────┼──────────┼──────────┤
+    test_1        | │              iterations │        1 │        0 │
+    test_1        | ├─────────────────────────┼──────────┼──────────┤
+    test_1        | │                requests │        2 │        0 │
+    test_1        | ├─────────────────────────┼──────────┼──────────┤
+    test_1        | │            test-scripts │        2 │        0 │
+    test_1        | ├─────────────────────────┼──────────┼──────────┤
+    test_1        | │      prerequest-scripts │        0 │        0 │
+    test_1        | ├─────────────────────────┼──────────┼──────────┤
+    test_1        | │              assertions │        3 │        0 │
+    test_1        | ├─────────────────────────┴──────────┴──────────┤
+    test_1        | │ total run duration: 273ms                     │
+    test_1        | ├───────────────────────────────────────────────┤
+    test_1        | │ total data received: 9B (approx)              │
+    test_1        | ├───────────────────────────────────────────────┤
+    test_1        | │ average response time: 92ms                   │
+    test_1        | └───────────────────────────────────────────────┘
+    dockerinfinispanexample_test_1 exited with code 0
+    Stopping infinispan ... done
+    Removing dockerinfinispanexample_test_1 ... done
+    Removing infinispan ... done
+    Removing network dockerinfinispanexample_default

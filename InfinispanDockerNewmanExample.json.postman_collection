@@ -1,0 +1,66 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Infinispan docker example",
+		"_postman_id": "1ebb7d74-a84c-3b2b-5cc7-57c9c7e4541e",
+		"description": "Simple examples of using the Infinispan ReST Interface with\nno authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "requests",
+			"description": "",
+			"item": [
+				{
+					"name": "put example",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://infinispan:8080/rest/default/a02",
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "something"
+						},
+						"description": "Simple example of putting a value into\nan Infinispan cache using the ReST\ninterface with no authentication"
+					},
+					"response": []
+				},
+				{
+					"name": "get example",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"tests[\"Body is correct\"] = responseBody === \"something\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://infinispan:8080/rest/default/a02",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Simple example of getting value\nfrom an Infinispan cache with\nno authentication\n"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
