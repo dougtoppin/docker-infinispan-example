@@ -40,20 +40,19 @@ Now start it up and expose the ports that we need.
 We will be running it as a daemon (meaning in the background).
 Replace the image id at the end with your newly build id.
 
-    docker run -d -it -p 8080:8080 -p 11222:11222 docker-infinispan
+    docker run -d -it -p 8080:8080 -p 11222:11222 --rm --name=docker-infinispan docker-infinispan
 
 Or just run the already built image in Dockerhub
 
-    docker run -d -it -p 8080:8080 -p 11222:11222 dougtoppin/docker-infinispan-example
+    docker run -d -it -p 8080:8080 -p 11222:11222 --rm --name=docker-infinispan dougtoppin/docker-infinispan-example
 
 
 ####Going in to the container
 
 Go in the container with a shell and look around using the following command if you want to.
 The `standalone.xml` that was modified to remove authentication can be found at `/opt/jboss/infinispan-server/standalone/configuration/standalone.xml`.
-Note that `$(docker ps -lq)` will return the container id of the most recently run container.
 
-    docker exec -i -t $(docker ps -lq) /bin/bash
+    docker exec -it docker-infinispan /bin/bash
 
 ####Testing
 Once your container is running you can use the ReST interface to access the Infinispan server.
@@ -133,7 +132,7 @@ To use `curl` to get what was just stored use this
 
 After you have done a few operations using postman try using the `infinispan-cli` to get some stats from the cache like this:
 
-    $ docker exec -it $(docker ps -lq) sh /opt/jboss/infinispan-server/bin/ispn-cli.sh
+    $ docker exec -it docker-infinispan sh /opt/jboss/infinispan-server/bin/ispn-cli.sh
 
     You are disconnected at the moment. Type 'connect' to connect to the server or 'help' for the list of supported commands.
     [disconnected /]
@@ -178,7 +177,7 @@ When you are all done with your container shell exit it as well
 
 Now stop the container with (using the same container id from the `exec` command)
 
-    docker stop b8c20c0bafe9
+    docker stop docker-infinispan
 
 #####docker-compose
 docker-compose is an orchestration mechanism that allows grouping related services into a single docker-compose.yml file.

@@ -17,5 +17,6 @@ RUN sed -i 's/.*rest-connector.*/<rest-connector virtual-server=\"default-host\"
 # Expose Infinispan server  ports
 EXPOSE 8080 8181 9990 11211 11222
 
-# Run Infinispan server and bind to all interface
-CMD ["/opt/jboss/infinispan-server/bin/standalone.sh", "-b", "0.0.0.0"]
+# Run Infinispan server and bind to just the local interface
+CMD ["/opt/jboss/infinispan-server/bin/standalone.sh", "-b", "127.0.0.1"]
+

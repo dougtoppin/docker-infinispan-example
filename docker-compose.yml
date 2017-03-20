@@ -6,9 +6,15 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
       - "127.0.0.1:11222:11222"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 1s
+      timeout: 1s
+      retries: 3
   test:
     depends_on:
-      - infinispan
+      infinispan:
+        condition: service_healthy
     image: postman/newman_ubuntu1404
     volumes:
       - .:/etc/newman
