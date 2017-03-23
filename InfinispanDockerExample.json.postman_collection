@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Infinispan docker example",
-		"_postman_id": "1ebb7d74-a84c-3b2b-5cc7-57c9c7e4541e",
+		"_postman_id": "936be98b-76cc-336d-68f7-3002947048a6",
 		"description": "Simple examples of using the Infinispan ReST Interface with\nno authentication",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -55,8 +55,34 @@
 						"url": "http://127.0.0.1:8080/rest/default/a02",
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": "Simple example of getting value\nfrom an Infinispan cache with\nno authentication\n"
+					},
+					"response": []
+				},
+				{
+					"name": "get - negative test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 404\"] = responseCode.code === 404;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://127.0.0.1:8080/rest/default/somethingnotfound",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Confirm that getting a value that does not exist returns the correct result status."
 					},
 					"response": []
 				}
