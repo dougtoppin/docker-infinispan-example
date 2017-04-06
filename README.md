@@ -30,7 +30,7 @@ For this example I am using macOS and the following Docker versions. An earlier 
 
 Note that this will fire up a Centos-7 Linux, install Java, Infinispan, configure it a little and you are ready to go.
 
-####Building and running
+#### Building and running
 Build the container or run the one already built one in Dockerhub.
 If you want to build the image yourself try this:
 
@@ -47,19 +47,19 @@ Or just run the already built image in Dockerhub
     docker run -d -it -p 8080:8080 -p 11222:11222 --rm --name=docker-infinispan dougtoppin/docker-infinispan-example
 
 
-####Going in to the container
+#### Going in to the container
 
 Go in the container with a shell and look around using the following command if you want to.
 The `standalone.xml` that was modified to remove authentication can be found at `/opt/jboss/infinispan-server/standalone/configuration/standalone.xml`.
 
     docker exec -it docker-infinispan /bin/bash
 
-####Testing
+#### Testing
 Once your container is running you can use the ReST interface to access the Infinispan server.
 This can be done using either a tool such as `Postman` or `curl`
 
 
-#####Postman
+##### Postman
 The `postman` collection file in this directory contains an example of how to `put` something in to the default cache and then `get` it out again.
 Just import it into your postman client and try it out.
 Use the `put` entry first and then using `get` should return the same value.
@@ -73,7 +73,7 @@ Send it and the response should contain `something` with a status of `200 OK`.
 
 Try changing the key `a02` to something else and the request should not return anything (note the `404 Not Found` status if you do).
 
-#####Newman
+##### Newman
 Newman is a tool that allows you to run Postman collections at the shell. This facilitates automated testing such as in continuous integration. Newman can also be run as a container as follows. In this example, the current directory (containing the Postman collection) is passed to the container in the directory that it expects to find files (/etc/newman).
 Also note the network argument of host. This tells Docker to give the contain access to the host network rather than using it's own network space.
 
@@ -116,7 +116,7 @@ The output of the run will note the tests that were run and the results which sh
     └───────────────────────────────────────────────┘
 
 
-#####curl
+##### curl
 The `curl` command can also be used to access the cache.
 
 An example of a put to store the string `somethingTest2` with the key `a02` would look like this
@@ -128,7 +128,7 @@ To use `curl` to get what was just stored use this
     curl -X GET 'http://127.0.0.1:8080/rest/default/a02'
 
 
-####Infinispan cli
+#### Infinispan cli
 
 After you have done a few operations using postman try using the `infinispan-cli` to get some stats from the cache like this:
 
@@ -179,7 +179,7 @@ Now stop the container with (using the same container id from the `exec` command
 
     docker stop docker-infinispan
 
-#####docker-compose
+##### docker-compose
 docker-compose is an orchestration mechanism that allows grouping related services into a single docker-compose.yml file.
 Using that enables starting all of the related services using a single `docker-compose up` command.
 Compose can also facilitate automated regression testing by starting the necessary services, running regression testing and then stopping all of the services.
